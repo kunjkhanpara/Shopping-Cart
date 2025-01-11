@@ -1,116 +1,139 @@
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f9;
-  }
-  
-  .cart-wrapper {
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    background-color: #fff;
-  }
-  
-  h1 {
-    text-align: left;
-    font-size: 2.5rem;
-    color: #333;
-  }
-  
-  .cart-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 2rem;
-  }
-  
-  .cart-items {
-    background-color: #fafafa;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .cart-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    background-color: #f0f0f0;
-    padding: 10px;
-    border-radius: 8px;
-  }
-  
-  h4 {
-    margin: 0;
-    font-weight: 600;
-  }
-  
-  .quantity-controls {
-    display: flex;
-    align-items: center;
-  }
-  
-  .quantity-controls button {
-    padding: 5px 12px;
-    border: none;
-    background-color: #3498db;
-    color: white;
-    cursor: pointer;
-    margin: 0 10px;
-  }
-  
-  .quantity-controls button:hover {
-    background-color: #2980b9;
-  }
-  
-  .remove-btn {
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    padding: 5px 12px;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  
-  .remove-btn:hover {
-    background-color: #c0392b;
-  }
-  
-  .cart-summary {
-    background-color: #fdfdfd;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  h3 {
-    font-size: 1.8rem;
-    margin: 0;
-    color: #333;
-  }
-  
-  .new-item-form {
-    margin-top: 2rem;
-    display: flex;
-    gap: 1rem;
-  }
-  
-  .new-item-form input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    flex: 1;
-  }
-  
-  .new-item-form button {
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .new-item-form button:hover {
-    background-color: #218838;
-  }
-  
+.cart-container {
+  padding: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+  background: linear-gradient(to right, #c6ffdd, #fbd786, #f7797d);
+}
+
+.cart-title {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+.cart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.cart-item {
+  padding: 1rem;
+  background: white;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cart-item h4 {
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+  color: #444;
+}
+
+.cart-item p {
+  font-size: 1rem;
+  color: #777;
+}
+
+.qty-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.qty-controls button {
+  padding: 5px 10px;
+  font-size: 1rem;
+  background: teal;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.qty-controls button:hover {
+  background: #004d4d;
+}
+
+.qty-controls span {
+  margin: 0 10px;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.cart-summary {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cart-summary h2,
+.cart-summary h3 {
+  margin: 0.5rem 0;
+  color: #444;
+}
+
+.checkout-btn {
+  padding: 10px 20px;
+  background-color: green;
+  color: white;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.checkout-btn:hover {
+  background-color: darkgreen;
+}
+
+.suggestions {
+  margin-top: 2rem;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.suggestions h3 {
+  color: #444;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.suggestion-items {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.delivery-status {
+  margin-top: 1rem;
+  color: #f53b57;
+  font-size: 1.2rem;
+}
+
+.delivery-status h3 {
+  color: #333;
+}
+.search-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 2rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  color: #444;
+}
+
+.search-input:focus {
+  border-color: #74ebd5; /* Match the gradient color */
+  outline: none;
+}
