@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,  } from 'react';
 import './Cart.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -47,14 +47,26 @@ const Cart = () => {
     { id: 41, name: 'Chocolate (Pack)', price: 18, qty: 0 },
     { id: 42, name: 'Nuts (Small Pack)', price: 20, qty: 0 }
   ]);
+
   const [searchQuery, setSearchQuery] = useState('');
+  const [userInfo, setUserInfo] = useState({
+    name: '',
+    mobile: '+91',
+    city: '',
+    address: '',
+    pincode: '',
+    district: '',
+    state: '',
+  });
+  const [isCheckedOut, setIsCheckedOut] = useState(false);
+  const [orderId, setOrderId] = useState('');
   const navigate = useNavigate();
 
   const increment = (id) => setItems(items.map(i => i.id === id ? { ...i, qty: i.qty + 1 } : i));
   const decrement = (id) => setItems(items.map(i => i.id === id && i.qty > 0 ? { ...i, qty: i.qty - 1 } : i));
   const totalPrice = () => items.reduce((t, i) => t + i.price * i.qty, 0);
   const gst = () => (totalPrice() * 0.18).toFixed(2);
-  const deliveryCharge = () => (totalPrice() < 500 ? 40 : 0);  // Delivery charge logic
+  const deliveryCharge = () => (totalPrice() < 500 ? 40 : 0); 
   const grandTotal = () => (totalPrice() + parseFloat(gst()) + deliveryCharge()).toFixed(2);
 
   const summary = items
@@ -62,24 +74,51 @@ const Cart = () => {
     .map(i => `${i.name} x ${i.qty} = ₹${i.price * i.qty}`)
     .join(', ');
 
-  // Suggest low-cost items when the user is ₹50 away from free delivery
   const suggestionThreshold = 500;
   const currentTotal = totalPrice();
   const remainingForFreeDelivery = suggestionThreshold - currentTotal;
 
-  const showSuggestions = remainingForFreeDelivery === 50; // Show suggestions only if ₹50 is missing
-  const suggestionItems = items.filter(i => i.id >= 39); // Suggest low-cost items with id >= 39
+  const showSuggestions = remainingForFreeDelivery === 50;
+  const suggestionItems = items.filter(i => i.id >= 39);
 
   const filteredItems = items.filter(item =>
     item.name.toLowerCase().startsWith(searchQuery.toLowerCase())
   );
 
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
+  const handleSearchChange = (e) => setSearchQuery(e.target.value);
+
+  const handleItemClick = (item) => navigate(`/item/${item.id}`);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUserInfo(prevState => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
-  const handleItemClick = (item) => {
-    navigate(`/item/${item.id}`); // Navigate to item details page (adjust the route as necessary)
+  const handleCheckout = () => {
+    // Generate random order ID
+    const randomOrderId = `ORD-${Math.floor(Math.random() * 1000000)}`;
+    setOrderId(randomOrderId);
+    setIsCheckedOut(true);
+
+    // Reset cart after 10 seconds
+    setTimeout(() => {
+      setItems(items.map(i => ({ ...i, qty: 0 })));
+      setUserInfo({
+        name: '',
+        mobile: '+91',
+        city: '',
+        address: '',
+        pincode: '',
+        district: '',
+        state: '',
+      });
+      setIsCheckedOut(false);
+      setSearchQuery('');
+      setOrderId('');
+    }, 10000);
   };
 
   return (
@@ -106,36 +145,87 @@ const Cart = () => {
         ))}
       </div>
 
-      {remainingForFreeDelivery < 400 && remainingForFreeDelivery > 0 && (
-        <div className="delivery-status">
-          <h3>Missing ₹{remainingForFreeDelivery} to get free delivery.</h3>
+      {isCheckedOut && (
+        <div className="checkout-summary">
+          <h2>Thank you for placing your order!</h2>
+          <p>Your order ID: {orderId}</p>
+          <p>Your items will be delivered soon.</p>
+          <p>If you have any issues, contact us at kunjwhtsapp@gmail.com.</p>
         </div>
       )}
 
-      {showSuggestions && (
-        <div className="suggestions">
-          <h3>Missing ₹50 to get free delivery. You can add these items:</h3>
-          <div className="suggestion-items">
-            {suggestionItems.map(item => (
-              <div key={item.id} className="cart-item">
-                <h4>{item.name}</h4>
-                <p>₹{item.price}</p>
-                <button onClick={() => increment(item.id)}>Add</button>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {totalPrice() > 0 && (
+      {!isCheckedOut && (
         <div className="cart-summary">
-          <h2>Summary:</h2>
+          <h3>Cart Summary</h3>
           <p>{summary}</p>
-          <h3>Total: ₹{totalPrice()}</h3>
-          <h3>GST (18%): ₹{gst()}</h3>
-          <h3>Delivery Charge: ₹{deliveryCharge()}</h3>
-          <h2>Grand Total: ₹{grandTotal()}</h2>
-          <button className="checkout-btn">Checkout</button>
+          <p>Total: ₹{totalPrice()}</p>
+          <p>GST (18%): ₹{gst()}</p>
+          <p>Delivery Charge: ₹{deliveryCharge()}</p>
+          <p>Grand Total: ₹{grandTotal()}</p>
+
+          {showSuggestions && (
+            <div className="suggestions">
+              <h4>Suggested Items:</h4>
+              {suggestionItems.map(item => (
+                <div key={item.id}>
+                  <p>{item.name} - ₹{item.price}</p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <h3>Enter your details</h3>
+          <input
+            type="text"
+            name="name"
+            value={userInfo.name}
+            onChange={handleInputChange}
+            placeholder="Name"
+          />
+          <input
+            type="text"
+            name="mobile"
+            value={userInfo.mobile}
+            onChange={handleInputChange}
+            placeholder="Mobile"
+          />
+          <input
+            type="text"
+            name="city"
+            value={userInfo.city}
+            onChange={handleInputChange}
+            placeholder="City"
+          />
+          <input
+            type="text"
+            name="address"
+            value={userInfo.address}
+            onChange={handleInputChange}
+            placeholder="Address"
+          />
+          <input
+            type="text"
+            name="pincode"
+            value={userInfo.pincode}
+            onChange={handleInputChange}
+            placeholder="Pincode"
+          />
+          <input
+            type="text"
+            name="district"
+            value={userInfo.district}
+            onChange={handleInputChange}
+            placeholder="District"
+          />
+          <input
+            type="text"
+            name="state"
+            value={userInfo.state}
+            onChange={handleInputChange}
+            placeholder="State"
+          />
+
+          <button onClick={handleCheckout}>Checkout</button>
         </div>
       )}
     </div>

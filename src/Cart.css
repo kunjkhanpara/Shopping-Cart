@@ -123,6 +123,7 @@
 .delivery-status h3 {
   color: #333;
 }
+
 .search-input {
   width: 100%;
   padding: 10px;
@@ -136,4 +137,39 @@
 .search-input:focus {
   border-color: #74ebd5; /* Match the gradient color */
   outline: none;
+}
+
+/* New styles for form fields and user info */
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin: 0.5rem 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  color: #444;
+}
+
+input[type="text"]:focus {
+  border-color: #74ebd5;
+  outline: none;
+}
+
+.checkout-message {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.checkout-message h3 {
+  color: #4CAF50;
+  font-size: 1.5rem;
+}
+
+.checkout-message p {
+  font-size: 1.1rem;
+  color: #555;
 }
